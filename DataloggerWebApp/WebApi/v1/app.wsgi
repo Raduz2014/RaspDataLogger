@@ -1,8 +1,8 @@
-#AppWebSrv/appsrv_v1/application.wsgi
+#WebApi/v1/app.wsgi
 import importlib
 import os, sys
 
-sys.path.insert(0, "/home/pi/MeterWebApp/AppWebSrv/appsrv_v1")
+sys.path.insert(0, "home/pi/RaspDataLogger/DataloggerWebApp/WebApi/v1")
 
 import bottle
 from requestlogger import WSGILogger, ApacheFormatter
@@ -12,6 +12,6 @@ application = bottle.default_app()
 
 import appserv_config_api
 
-handlers = [FileHandler("/home/pi/MeterWebApp/AppWebSrv/appsrv_v1/logs/appservice.log"),]
+handlers = [FileHandler("/home/pi/RaspDataLogger/DataloggerWebApp/WebApi/v1/logs/v1_restapi.log"),]
 
 application = WSGILogger(application, handlers, ApacheFormatter())
