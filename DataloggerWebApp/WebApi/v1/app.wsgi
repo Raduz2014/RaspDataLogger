@@ -10,7 +10,7 @@ from logging import FileHandler
 
 application = bottle.default_app()
 
-import appserv_config_api
+import webapi_service
 
 handlers = [FileHandler("/home/pi/RaspDataLogger/DataloggerWebApp/WebApi/v1/logs/v1_restapi.log"),]
 
