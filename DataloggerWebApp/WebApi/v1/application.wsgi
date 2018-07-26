@@ -11,7 +11,7 @@ from bottle.ext import sqlite
 
 application = bottle.default_app()
 
-pluginSqlite = sqlite.Plugin('dbfile='/home/pi/RaspDataLogger/appdb/app.db')
+pluginSqlite = sqlite.Plugin(dbfile='/home/pi/RaspDataLogger/appdb/app.db')
 application.install(pluginSqlite)
 
 import web_api_service
