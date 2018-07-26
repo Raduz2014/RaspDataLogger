@@ -2,7 +2,7 @@
 import importlib
 import os, sys
 
-sys.path.insert(0, "home/pi/RaspDataLogger/DataloggerWebApp/WebApi/v1")
+sys.path.insert(0, "/home/pi/RaspDataLogger/DataloggerWebApp/WebApi/v1")
 
 import bottle
 from requestlogger import WSGILogger, ApacheFormatter
