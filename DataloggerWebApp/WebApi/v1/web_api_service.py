@@ -3,9 +3,9 @@ from bottle import route, template
 
 @route('/show/:item')
 def show(item, db):
-    row = db.execute('SELECT * from AppVersion where AppVersion=?', item).fetchone()
+    row = db.execute('SELECT NameVersion from AppVersion where AppVersion=?', item).fetchone()
     if row:
-        return template('showitem', page=row)
+        return  template('Hello {{page}}!', page=row)
     return HTTPError(404, "Page not found")
 
 
