@@ -9,6 +9,8 @@ from requestlogger import WSGILogger, ApacheFormatter
 from logging import FileHandler
 from bottle.ext import sqlite
 
+bottle.TEMPLATE_PATH = "/home/pi/RaspDataLogger/DataloggerWebApp/WebApi/v1/views"
+
 application = bottle.default_app()
 
 pluginSqlite = sqlite.Plugin(dbfile='/home/pi/RaspDataLogger/appdb/app.db')
