@@ -8,8 +8,12 @@ def show(item, db):
         return  template('Hello {{page}}!', page=row)
     return HTTPError(404, "Page not found")
 
-
+@route('/hello')
 @route('/hello/<name>')
+def hello(name='World'):
+    return template('hello_template', name=name)
+
+@route('/hellov2/<name>')
 def index(name):
         return template('<b>Hello {{name}}</b>', name=name)
 
