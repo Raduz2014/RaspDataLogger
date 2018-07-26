@@ -1,4 +1,4 @@
-#WebApi/v1/app.wsgi
+#WebApi/v1/application.wsgi
 import importlib
 import os, sys
 
