@@ -9,7 +9,7 @@ from requestlogger import WSGILogger, ApacheFormatter
 from logging import FileHandler
 from bottle.ext import sqlite
 
-bottle.TEMPLATE_PATH.insert(0, "/home/pi/RaspDataLogger/DataloggerWebApp/html/views"
+bottle.TEMPLATE_PATH.insert(0, "/home/pi/RaspDataLogger/DataloggerWebApp/html/views")
 
 application = bottle.default_app()
 
