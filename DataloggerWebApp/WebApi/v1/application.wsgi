@@ -8,6 +8,7 @@ import bottle
 from requestlogger import WSGILogger, ApacheFormatter
 from logging import FileHandler
 from bottle.ext import sqlite
+from bottle import Cork
 
 bottle.TEMPLATE_PATH.insert(0, "/home/pi/RaspDataLogger/DataloggerWebApp/html/views")
 
