@@ -1,0 +1,384 @@
+﻿div.tbt {
+    display: inline;
+}
+
+
+
+@font-face {
+    font-family: "emmsys";
+    src: url("images/emmsys.woff") format('woff'),url("images/emmsys.ttf")format('truetype'),url('images/emmsys.eot')format('embedded-opentype');
+}
+
+.km-ei-chart1:after,
+.km-ei-chart1:before {
+    font-family: "emmsys";
+    content: "\e000";
+}
+
+.km-ei-language2:after,
+.km-ei-language2:before {
+    font-family: "emmsys";
+    content: "\e012";
+}
+
+
+.km-ei-chart2:after,
+.km-ei-chart2:before {
+    font-family: "emmsys";
+    content: "\e001";
+}
+
+.km-ei-meter1:after,
+.km-ei-meter1:before {
+    font-family: "emmsys";
+    content: "\e002";
+}
+
+.km-ei-meter2:after,
+.km-ei-meter2:before {
+    font-family: "emmsys";
+    content: "\e003";
+}
+
+.km-ei-meter3:after,
+.km-ei-meter3:before {
+    font-family: "emmsys";
+    content: "\e004";
+}
+
+.km-ei-alarm1:after,
+.km-ei-alarm1:before {
+    font-family: "emmsys";
+    content: "\e005";
+}
+
+.km-ei-alarm2:after,
+.km-ei-alarm2:before {
+    font-family: "emmsys";
+    content: "\e006";
+}
+
+.km-ei-logout:after,
+.km-ei-logout:before {
+    font-family: "emmsys";
+    content: "\e00a";
+}
+
+.km-ei-login:after,
+.km-ei-login:before {
+    font-family: "emmsys";
+    content: "\e00b";
+}
+
+.km-ei-settings1:after,
+.km-ei-settings1:before {
+    font-family: "emmsys";
+    content: "\e007";
+}
+
+.km-ei-settings2:after,
+.km-ei-settings2:before {
+    font-family: "emmsys";
+    content: "\e008";
+}
+
+.km-ei-settings3:after,
+.km-ei-settings3:before {
+    font-family: "emmsys";
+    content: "\e009";
+}
+
+.km-ei-settings4:after,
+.km-ei-settings4:before {
+    font-family: "emmsys";
+    content: "\e00d";
+}
+
+.km-ei-back:after,
+.km-ei-back:before {
+    font-family: "emmsys";
+    content: "\e00c";
+}
+
+
+
+.km-ei-user:after,
+.km-ei-user:before {
+    font-family: "emmsys";
+    content: "\e00e";
+}
+
+.km-ei-password:after,
+.km-ei-password:before {
+    font-family: "emmsys";
+    content: "\e00f";
+}
+
+.km-ei-language1:after,
+.km-ei-language1:before {
+    font-family: "emmsys";
+    content: "\e010";
+}
+
+.km-ei-database:after,
+.km-ei-database:before {
+    font-family: "emmsys";
+    content: "\e011";
+}
+
+.km-ei-med-10:after,
+.km-ei-med-10:before {
+    font-family: "emmsys";
+    content: "\e013";
+}
+
+.km-ei-med-100:after,
+.km-ei-med-100:before {
+    font-family: "emmsys";
+    content: "\e014";
+}
+
+.km-ei-med-101:after,
+.km-ei-med-101:before {
+    font-family: "emmsys";
+    content: "\e015";
+}
+
+.km-ei-med-7:after,
+.km-ei-med-7:before {
+    font-family: "emmsys";
+    content: "\e016";
+}
+
+.km-ei-flame1:after,
+.km-ei-flame1:before {
+    font-family: "emmsys";
+    content: "\e017";
+}
+
+.km-ei-flame2:after,
+.km-ei-flame2:before {
+    font-family: "emmsys";
+    content: "\e018";
+}
+
+.km-ei-med-4:after,
+.km-ei-med-4:before {
+    font-family: "emmsys";
+    content: "\e019";
+}
+
+.km-ei-med-3:after,
+.km-ei-med-3:before {
+    font-family: "emmsys";
+    content: "\e020";
+}
+
+.km-ei-med-electricity1:after,
+.km-ei-med-electricity1:before {
+    font-family: "emmsys";
+    content: "\e021";
+}
+
+.km-ei-med-101:after,
+.km-ei-med-101:before {
+    font-family: "emmsys";
+    content: "\e01a";
+}
+
+.km-ei-med-6:after,
+.km-ei-med-6:before {
+    font-family: "emmsys";
+    content: "\e01b";
+}
+
+.km-ei-med-electricity2:after,
+.km-ei-med-electricity2:before {
+    font-family: "emmsys";
+    content: "\e01c";
+}
+
+.km-ei-med-2:after,
+.km-ei-med-2:before {
+    font-family: "emmsys";
+    content: "\e01d";
+}
+
+.km-ei-mediums1:after,
+.km-ei-mediums1:before {
+    font-family: "emmsys";
+    content: "\e01e";
+}
+
+.km-ei-mediums2:after,
+.km-ei-mediums2:before {
+    font-family: "emmsys";
+    content: "\e01f";
+}
+
+.km-ei-mediums:after,
+.km-ei-mediums:before {
+    font-family: "emmsys";
+    content: "\e023";
+}
+
+.km-ei-workorders:after,
+.km-ei-workorders:before {
+    font-family: "emmsys";
+    content: "\e602";
+}
+
+.km-ei-workorders1:after,
+.km-ei-workorders1:before {
+    font-family: "emmsys";
+    content: "\e603";
+}
+
+.km-ei-workorder:after,
+.km-ei-workorder:before {
+    font-family: "emmsys";
+    content: "\e601";
+}
+
+.km-ei-workorder1:after,
+.km-ei-workorder1:before {
+    font-family: "emmsys";
+    content: "\e600";
+}
+
+.km-ei-save1:after,
+.km-ei-save1:before {
+    font-family: "emmsys";
+    content: "\e604";
+}
+
+.km-ei-save2:after,
+.km-ei-save2:before {
+    font-family: "emmsys";
+    content: "\e605";
+}
+
+.km-ei-location1:after,
+.km-ei-location1:before {
+    font-family: "emmsys";
+    content: "\e606";
+}
+
+.km-ei-location2:after,
+.km-ei-location2:before {
+    font-family: "emmsys";
+    content: "\e607";
+}
+
+.km-ei-location3:after,
+.km-ei-location3:before {
+    font-family: "emmsys";
+    content: "\e608";
+}
+
+.km-ei-location4:after,
+.km-ei-location4:before {
+    font-family: "emmsys";
+    content: "\e609";
+}
+
+.km-ei-arrowup:after,
+.km-ei-arrowup:before {
+    font-family: "emmsys";
+    content: "\e60a";
+}
+
+.km-ei-car:after,
+.km-ei-car:before {
+    font-family: "emmsys";
+    content: "\e60b";
+}
+
+.km-ei-med-24:after,
+.km-ei-med-24:before {
+    font-family: "emmsys";
+    content: "\e60c";
+}
+
+.km-ei-med-pressure:after,
+.km-ei-med-pressure:before {
+    font-family: "emmsys";
+    content: "\e60d";
+}
+
+.km-ei-balance:after,
+.km-ei-balance:before {
+    font-family: "emmsys";
+    content: "\e60e";
+}
+
+.km-ei-dmaarch:after,
+.km-ei-dmaarch:before {
+    font-family: "emmsys";
+    content: "\e611";
+}
+.km-ei-diagrams:after,
+.km-ei-diagrams:before {
+    font-family: "emmsys";
+    content: "\e60f";
+}
+
+.km-ei-dma:after,
+.km-ei-dma:before {
+    font-family: "emmsys";
+    content: "\e610";
+}
+
+.km-ei-mnf:after,
+.km-ei-mnf:before {
+    font-family: "emmsys";
+    content: "\e614";
+}
+
+.km-ei-ainlet:after,
+.km-ei-ainlet:before {
+    font-family: "emmsys";
+    content: "\e612";
+}
+
+.km-ei-fieldreport:after,
+.km-ei-fieldreport:before {
+    font-family: "emmsys";
+    content: "\e615";
+}
+
+.km-ei-aoutlet:after,
+.km-ei-aoutlet:before {
+    font-family: "emmsys";
+    content: "\e613";
+}
+
+.km-ei-dgr0:after,
+.km-ei-dgr0:before {
+    font-family: "emmsys";
+    content: "\e616";
+}
+
+.km-ei-dgr2:after,
+.km-ei-dgr2:before {
+    font-family: "emmsys";
+    content: "\e617";
+}
+
+.km-ei-dgr1:after,
+.km-ei-dgr1:before {
+    font-family: "emmsys";
+    content: "\e618";
+}
+
+.km-ei-pdf:after,
+.km-ei-pdf:before {
+    font-family: "emmsys";
+    content: "\e619";
+}
+
+.km-ei-dyndiag:after,
+.km-ei-dyndiag:before {
+    font-family: "emmsys";
+    content: "\e61a";
+}
