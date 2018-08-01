@@ -1,11 +1,683 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Web app system config</title>
+    <title>Datalogger web configuration</title>
     <meta name="msapplication-tap-highlight" content="no" />
     <meta charset="utf-8" />
+    
+    <link href="styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="styles/kendo.default.min.css" rel="stylesheet" />
+    <link href="styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
+    <link href="styles/applogger.css" rel="stylesheet" />
+
+    <style>
+        /*
+        #home #menuListview {
+            background-color:#FFF8DC;
+        }
+
+        #home .km-state-active {
+            background-color:grey;
+        }
+
+        #home .km-group-title {
+            background-color: #cbb21c;
+            color:black;
+            font-weight:bold;
+            text-align:center;
+        }
+
+        #home .km-listview-link {
+            background-color: #FFF8DC;
+            box-shadow: inset 0 0 30px #D3D3D3;
+            -webkit-box-shadow: inset 0 0 30px #D3D3D3;
+            border-radius:20px;
+        }
+
+        */
+    </style>
 </head>
 <body>
-It's working
+    <div data-role="view" id="home" 
+         data-title="Home" 
+         data-model="MainApp.data.modelHome"
+         data-bind="events:{init:onInit}"
+         data-layout="default-layout" 
+         data-show="MainApp.data.viewShow" data-init="MainApp.data.viewInit">
+        <div>
+            <ul id="menuListview" data-role="listview" 
+                data-style="inset" data-type="group">
+                <li>
+                    General info
+                    <ul>
+                        <li data-icon="toprated"><a href="#sys-status">System status</a></li>
+                        <li data-icon="toprated"><a href="#about">About system</a></li>
+                    </ul>
+                </li>
+                <li>
+                    Settings
+                    <ul>
+                        <li data-icon="toprated"><a href="#lan-network">LAN Network Card</a></li>
+                        <li data-icon="toprated"><a href="#wifi-network">Wifi Network Card</a></li>
+                        <li data-icon="toprated"><a href="">Mobile Data</a></li>
+                        <li data-icon="toprated"><a href="">Cloud settings</a></li>
+                        <li data-icon="toprated"><a href="#ftp-servercfg">Ftp Server</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    Monitoring system
+                    <ul>
+                        <li data-icon="toprated"><a href="#modbus-config" data-tbt="Modbus Configuration">Modbus settings</a></li>
+                        <li data-icon="toprated"><a href="#device-reads" data-tbt="">Devices readings</a></li>
+                        <li data-icon="toprated"><a href="#modbus-devices">Modbus devices</a></li>
+                        <!--<li data-icon="toprated"><a href="#mbus-devices">M-Bus devices</a></li>-->
+                        <li data-icon="toprated"><a href="#modbus-device-drivers">Modbus drivers</a></li>
+                        <li data-icon="toprated"><a href="#tasks">Tasks</a></li>
+                        <li data-icon="toprated"><a href="#read-profiles">Read profiles</a></li>
+                        <li data-icon="toprated"><a href="#device-services">Device services</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    Users
+                    <ul>
+                        <li data-icon="toprated"><a href="#users">Users</a></li>
+                        <li data-icon="toprated"><a href="#changepass">Change password</a></li>
+                    </ul>
+                </li>
+                <li>
+                    Log status
+                    <ul>
+                        <li data-icon="toprated"><a href="">Log In</a></li>
+                        <li data-icon="toprated"><a href="">Log Out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="lan-network" data-role="view" 
+         data-title="Lan settings"
+         data-layout="default-layout"
+         data-ng-model-options="MainApp.data.modelLanInterface"
+         data-show="MainApp.data.viewShow" data-init="MainApp.data.viewInit">
+        <div class="viewOuterDiv">
+            <div class="viewInnerDiv">
+                <h2>Lan settings</h2>
+                    <ul data-role="listview" data-style="inset">
+                        <li>
+                            <div class="tbt" data-tbt="IP Address">IP address</div>
+                            <input type="text" id="ipaddr" name="ipaddr" placeholder="Lan card IP address" />
+                        </li>
+                        <li data-icon="">
+                            <div class="tbt" data-tbt="Network mask">Network Mask</div>
+                            <input type="text" id="networkmask" name="networkmask" placeholder="Network mask" />
+                        </li>
+                        <li data-icon="">
+                            <div class="tbt" data-tbt="Gateway">Gateway</div>
+                            <input type="text" id="gateway_addr" name="gateway_addr" placeholder="Gateway address" />
+                        </li>
+                    </ul>
+                    <a id="saveLanBtn" data-bind="events:{click: saveSettings}" data-role="button" style="text-align: center; display: block; margin: 1em;">
+                        <div class="tbt" data-tbt="Save">Save</div>
+                    </a>
+                    <a id="resetLanBtn" data-bind="events:{click: resetSettings}" data-role="button" style="text-align: center; display: block; margin: 1em;">
+                        <div class="tbt" data-tbt="Reset">Reset</div>
+                    </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="wifi-network" data-role="view" 
+         data-title="Wireless settings" 
+         data-model="MainApp.data.modelWificard"
+         data-bind="events:{init:onInit}"
+         data-layout="default-layout" 
+         data-show="MainApp.data.viewShow" data-init="MainApp.data.viewInit" data-stretch="true">
+        <style>
+            .viewInnerDiv ul {
+                margin:0;
+                padding:0;
+            }
+
+            .viewInnerDiv ul li {
+                margin:0;
+                padding:10px 10px 10px 20px;
+                min-height:28px;
+                line-height:28px;
+                vertical-align:middle;
+                border-top: 1px solid rgba(128,128,128,.5);
+            }
+
+            .viewInnerDiv {
+                min-width: 220px;
+                margin-top: 50px;
+                padding: 0;
+            }
+            .viewInnerDiv ul li .km-switch {
+                float: right;
+            }
+        </style>
+        
+        <div class="viewOuterDiv">
+            <div class="viewInnerDiv">
+                <ul>
+                    <li>
+                        <span>Access Point Mode</span><input type="checkbox" id="wifimode-switch" aria-label="Wifi mode Switch" />
+                    </li>
+                    <li>
+                        <div id="wifiApMode" style="display:none;">
+                        ap
+                        </div>
+                        <div id="wifiNetworksMode" style="display:none;">
+                        available wifi networks
+                        </div>
+                    </li>
+                    <!--<li>Always visible <input id="visible-switch" aria-label="Visible Switch" /></li>
+                    <li>Display real name <input id="name-switch" aria-label="Name Switch" /></li>-->
+                </ul>
+
+
+                <a id="saveLanBtn" data-bind="events:{click:saveSettings}" data-role="button" style="text-align: center; display: block; margin: 1em;">
+                    <div class="tbt" data-tbt="Save">Save</div>
+                </a>
+                <a id="resetLanBtn" data-bind="events:{click:resetSettings}" data-role="button" style="text-align: center; display: block; margin: 1em;">
+                    <div class="tbt" data-tbt="Reset">Reset</div>
+                </a>
+            </div>
+        </div>
+        
+    </div>
+
+    <div data-role="view" id="about"
+            data-title="About"
+            data-model="MainApp.data.modelAbout"
+            data-bind="events:{init:onInit}"
+            data-layout="default-layout" data-show="MainApp.data.viewShow" data-init="MainApp.data.viewInit">
+        <a data-role="button" data-click="MainApp.data.navigateToSettings">back</a>
+        <!--<button data-role="button" data-id="btnLogout" data-bind="events:{click:onLogOut}">Log out</button>-->
+    </div>
+
+    <div data-role="view" id="logout"
+         data-model="MainApp.data.modelLogout"
+         data-bind="events:{init:onInit}"
+         data-layout="default-layout" 
+         data-show="MainApp.data.viewShow" 
+         data-init="MainApp.data.viewInit">
+
+        <div class="logoutdiv">
+            <form>
+                <a id="logoutButton" data-bind="events:{click:onLogOut}" 
+                   data-role="button" style="text-align: center; display: block; margin: 1em;">
+                    <div class="tbt" data-tbt="Logout">Logout</div>
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <div data-role="view" id="sys-status">
+        <span>System Status</span>
+    </div>
+
+    <div data-role="view" id="ftp-servercfg">
+        <span>Ftp server settings</span>
+    </div>
+
+    <div data-role="view" id="modbus-config"
+         data-title="Modbus settings" 
+         data-model="MainApp.data.modelCfgModbus"
+         data-bind="events:{init:onInit}"
+         data-layout="default-layout" 
+         data-show="MainApp.data.viewShow" data-init="MainApp.data.viewInit" data-stretch="true">
+
+        <style>
+             #modbus-config div ul {
+                margin:0;
+                padding:0;
+            }
+
+             #modbus-config div ul li {
+                margin:0;
+                padding:10px 10px 10px 20px;
+                min-height:28px;
+                line-height:28px;
+                vertical-align:middle;
+                border-top: 1px solid rgba(128,128,128,.5);
+            }
+
+
+             #modbus-config div ul li .k-dropdown {
+                float: right;
+            }
+            #modbus-config div.lbl {
+                display:inline;                
+            }
+
+        </style>
+        <div class="viewModbusCfg">
+            <h2>Modbus settings</h2>
+            <ul>
+                <li>
+                    <div class="lbl">Protocol</div><input id="inputModbusProtocol" style="width:50%;" />
+                </li>
+                <li class="modbusRTU">
+                    <div class="lbl">Serial port</div><input id="inputSerialPort" style="width:50%;" />
+                </li>
+                <li class="modbusRTU">
+                    <div class="lbl">Port speed</div><input id="inputSerialSpeed" style="width:50%;"/>
+                </li>
+                <li class="modbusTCP" style="display:none;"></li>
+            </ul>
+
+
+            <a id="saveCfgBtn" data-bind="events:{click:saveCfg}" data-role="button" style="text-align: center; display: block; margin: 1em;">
+                <div class="tbt" data-tbt="Save">Save</div>
+            </a>
+        </div>
+    </div>
+
+    <div data-role="view" id="device-reads">
+        <span>Reads</span>
+    </div>
+
+    <div data-role="view" id="system-status">
+        <span>System Status</span>
+    </div>
+
+    <div data-role="view" id="modbus-devices">
+        <span>Modbus devices</span>
+    </div>
+
+    <div data-role="view" id="modbus-device-drivers">
+        <span>Modbus device drivers</span>
+    </div>
+
+    <!--View Device Services-->
+    <div id="device-services"
+         data-role="view" data-model="MainApp.data.modelDeviceServices"
+         data-title="Device services"
+         data-layout="default-layout"
+         data-show="MainApp.data.viewShow"
+         data-init="MainApp.data.viewInit">
+        <style>
+            .service-list-header {
+                padding: 1em;
+                width:100%;
+            }
+
+            .service-list-header  div{
+                display:inline;
+                width:25%;
+                font-weight:bold;
+
+            }
+
+                .service-list-header div:nth-child(1) {
+                padding-right:4.5em;
+                padding-left:0.5em;
+
+
+                }
+                .service-list-header div:nth-child(2) {
+                padding-left:4.5em;
+
+                }
+                .service-list-header div:nth-child(3) {
+                    float:right;
+                }
+
+            .service-view {
+                padding: 1em;
+                width:100%;
+            }
+                .service-view div {
+                    display: inline;
+                }
+                .service-view div:nth-child(1).lblServiceCode {
+                    padding-right:8.5em;
+                    padding-left:0.5em;
+                }
+                .service-view div:nth-child(1).editServiceCode {
+                    padding-right:2.5em;
+                    padding-left:0em;
+                }
+                .service-view div:nth-child(2).lblServiceName {
+                    padding-left:4.5em;               
+                }
+                 .service-view div:nth-child(2).editServiceName {
+                    padding-left:0em;               
+                }
+
+                .service-view div:nth-child(3){
+                    float:right;
+                }
+
+            div.no-service-empty {
+                padding: 0.4em;
+                background-color: #cecece;
+                text-align: center;
+                font-weight: bold;
+            }
+        </style>
+        <div>
+            <h2>Device Services</h2>
+            <a class="k-button k-button-icontext k-add-button" data-bind="events:{click:onAddNewService}"><span class="k-icon k-i-add"></span>Add new service</a>
+            <div class="service-list-header">
+                <div>Service code</div>
+                <div>Service name</div>
+                <div></div>
+            </div>
+            <div id="deviceServicesList"></div>
+        </div>
+
+        <!--Template for DeviceServiceListView item-->
+        <script type="text/x-kendo-tmpl" id="tmplServiceV1">
+            <div class="service-view k-widget">
+                <ul>
+                    <li>
+                        <div style="width:40%;">
+                            <span>Service name:</span>
+                            <span>#:service_name#</span>
+                        </div>
+                        <div  style="width:40%;">
+                            <span>Service code:</span>
+                            <span>#:service_code#</span>
+                        </div>
+                        <div style="width:7%;">
+                            <a class="k-button k-edit-button"><span class="k-icon k-i-edit"></span></a>
+                            <a class="k-button k-delete-button"><span class="k-icon k-i-delete"></span></a>
+                        </div>
+                    </li>
+                </ul> 
+            </div>
+        </script>
+
+        <script type="text/x-kendo-tmpl" id="tmplService">
+            <div class="service-view">
+                <div class="lblServiceCode">#:service_code#</div>
+                <div class="lblServiceName">#:service_name#</div>
+                <div>
+                    <a class="k-button k-edit-button"><span class="k-icon k-i-edit"></span></a>
+                    <a class="k-button k-delete-button"><span class="k-icon k-i-delete"></span></a>
+                </div>
+            </div>
+        </script>
+
+        <!--Template for DeviceServiceListView edit item-->
+        <script type="text/x-kendo-tmpl" id="tmplEditService">
+            <div class="service-view">                       
+                <div class="editServiceCode">
+                    <input type="text" class="k-textbox" data-bind="value:service_code" name="ServiceCode" required="required" />
+                </div>
+                <div class="editServiceName">
+                    <input type="text" class="k-textbox" data-bind="value:service_name" name="ServiceName" required="required" />
+                </div>
+                <div>
+                    <a class="k-button k-update-button"><span class="k-icon k-i-check"></span></a>
+                    <a class="k-button k-cancel-button"><span class="k-icon k-i-cancel"></span></a>
+                </div>
+
+            </div>
+
+        </script>
+    </div>
+
+    <!--View Read Profiles-->
+    <div data-role="view" id="read-profiles"
+         data-title="Read Profiles" 
+         data-model="MainApp.data.modelReadProfiles"
+         data-bind="events:{init:onInit}"
+         data-layout="default-layout" 
+         data-show="MainApp.data.viewShow" data-init="MainApp.data.viewInit" data-stretch="false">
+        
+        <style>
+            .profile-view {
+                padding:0.2em;
+            
+            }
+
+            #profilesListView ul {
+                list-style-type:none;
+                margin:0;
+                padding:0;
+            }
+            #profilesListView ul li h3.profile-header {
+                font-weight:900;
+                display:inline;
+            }
+                /*#profilesListView ul li {
+                    margin-top:0.7em;
+                }*/
+
+            #profilesListView ul li span.profile-value {
+                padding:0.2em;
+            }
+
+
+            #profilesListView ul li ul.profile-services  {
+                margin-top:0.1em;
+            }
+
+            #profilesListView ul li ul.profile-services li {
+                padding-top: 0.7em;
+            }
+            #profilesListView ul li ul.profile-services li span:first-child {
+                background-color:#cecece;
+                padding:0.4em;
+                width:50%;
+                display:inline-block;
+                text-align:center;
+            }
+
+            #profilesListView ul li ul.profile-services li span:last-child {
+                background-color:#cecece;
+                color:black;
+                font-weight:bold;
+                padding:0.4em;
+                width:50%;
+                display:inline-block;
+                text-align:left;
+                float:right;
+            }
+
+            .edit-buttons {
+                background-color: #a9a9a9;
+                padding-left:1em;
+                padding-top:0.5em;
+                padding-bottom:0.5em;
+            }
+
+            div.no-service-empty {
+                padding:0.4em;
+                background-color:#cecece;
+                text-align:center;
+                font-weight:bold;
+
+            }
+        </style>
+        
+        <div class="">
+            <h2>Device Profiles</h2>
+            <div>
+                <label for="txtProfileNameInput">Profile name</label>
+                <input id="txtProfileNameInput" type="text" class="k-textbox" />
+                <a class="k-button k-button-icontext k-add-button" data-bind="events:{click:onAddNewProfile}"><span class="k-icon k-i-add"></span>Add new profile</a>
+
+            </div>
+            
+            <div id="profilesListView"></div>           
+        </div>
+
+        <script type="text/x-kendo-tmpl" id="tmplProfile">
+            <div class="profile-view">
+                <ul>
+                    <li>
+                        <h3 class="profile-header">Profile name:</h3>
+                        <span class="profile-value">#:NameProfile#</span>
+                        <ul class="profile-services">
+                            #if(MeterServices.length > 0){#
+                                # for (var i = 0; i < MeterServices.length; i++) { #
+                                <li class="prof-serv-li">
+                                    <span>#= MeterServices[i].service_code #</span>
+                                    <span>#= MeterServices[i].service_name #</span>
+                                </li>
+                            # } #
+                            #}else{#
+                            <li class="prof-serv-li">
+                                <div class="no-service-empty">No services
+                                </div>
+                            </li>
+                            #}#
+                        </ul>
+                    </li>
+                </ul>
+                <!--<div class="edit-buttons">
+                    <a class="k-button k-edit-button" ><span class="k-icon k-i-edit"></span></a>
+                    <a class="k-button k-delete-button"><span class="k-icon k-i-delete"></span></a>
+                </div>-->
+            </div>
+        </script>
+
+        <script type="text/x-kendo-tmpl" id="tmplEditProfile">
+            <div class="profile-view k-widget">
+                <ul>
+                    <li>
+                        <span>Profile Name</span>
+                        <input type="text" class="k-textbox" data-bind="value:NameProfile" name="ProfileName" required="required" />
+                    </li>
+                </ul>
+                <div class="edit-buttons">
+                    <a class="k-button k-update-button"><span class="k-icon k-i-check"></span></a>
+                    <a class="k-button k-cancel-button"><span class="k-icon k-i-cancel"></span></a>
+                </div>
+            </div>
+
+        </script>
+
+    </div>
+
+    <!--Modal view to Add/Remove profile and services of profiles-->
+    <div id="modalViewAddDelProfileServices"
+         data-role="modalview"
+         data-open="MainApp.data.onOpenModelView"
+         data-init="MainApp.data.onModalViewInit"
+         style="width: 90%; height:50%;">
+        <div data-role="header">
+            <div data-role="navbar">
+                <span data-id="mvtitle"></span>
+            </div>
+        </div>
+        <style>
+            #modalViewAddDelProfileServices .devservices-outsection {
+                text-align: center;
+            }
+            #modalViewAddDelProfileServices .devservices-insection {
+                position:absolute;
+                top:0;
+                left:0;
+                padding-top:1.2em;
+            }
+
+            .devservices-insection label {
+                margin-bottom: 5px;
+                font-weight: bold;
+                display: inline-block;
+                width:45%;
+            }
+
+            #modalViewAddDelProfileServices .devservices-insection {
+                max-width: none;
+                width: 100%;
+            }
+
+            #modalViewAddDelProfileServices .k-listbox {
+                width: 45%;
+                height: 310px;
+            }
+
+                #modalViewAddDelProfileServices .k-listbox:first-of-type {
+                    width: 45%;
+                    margin-right: 1px;
+                }
+        </style>
+        <div class="devservices-outsection">
+            <div class="devservices-insection">
+                <!--<div data-id="serviceDataList"></div>-->
+                <label for="optional" id="employees">All available services</label>
+                <label for="selected">Profile services</label>
+                <br />
+                <select id="allDeviceServiceList"></select>
+                <select id="allProfileServiceList"></select>
+            </div>
+        </div>
+        <div data-role="footer">
+            <div data-role="navbar">
+                <a class="SubmitChangesBtn" data-role="button" data-align="right">Submit Changes</a>
+                <a class="cancelChangesBtn" data-role="button" data-align="left">Cancel</a>
+            </div>
+        </div>
+
+        <!--Template service item-->
+        <script type="text/kendo-x-tmpl" id="tmplServiceItem">
+            <div style="width:100%;">
+                <span style="width:10%; display:inline-block;">#:service_code#</span>
+                <span style="width:85%; display:inline-block;">#:service_name#</span>
+            </div>
+        </script>
+    </div>
+
+    <div data-role="view" id="tasks-schedule">
+        <span>Task Schedule</span>
+    </div>
+
+    <div data-role="view" id="tasks">
+        <span>Tasks</span>
+    </div>
+
+    <div id="empty-view" data-role="view">
+        <div>
+            <span>Empty view</span>
+            
+        </div>
+    </div>
+
+    <div data-role="layout" data-id="default-layout">
+        <div data-role="header">
+            <div data-role="navbar" style="background-color: green">
+                <span data-role="view-title">My View Title</span>
+            </div>
+        </div>
+        <!--View content will render here-->
+        <div data-role="footer">
+            <div data-role="tabstrip">
+                <a data-icon="home" href="/">Home</a>
+                <a data-icon="info" href="about">About</a>
+                <a data-icon="ei-user" href="#logout">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div data-role="layout" data-id="modalview1-layout">
+        <div data-role="header">
+        </div>
+        <!--View content will render here-->
+        <div data-role="footer">
+            <div data-role="tabstrip">
+                <a id="submitChangesBtn" data-role="button" data-click="MainApp.data.submitProfileChanges">Submit</a>
+                <a id="cancelChangesBtn" data-role="button" data-click="MainApp.data.cancelProfileChanges">Cancel</a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- jQuery JavaScript -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jszip.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/kendo.all.min.js"></script>
+    <!-- App main JavaScript -->
+    <script src="jsApp/main.js"></script>
 </body>
 </html>
