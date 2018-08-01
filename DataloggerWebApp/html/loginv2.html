@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Datalogger login page</title>
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta charset="utf-8" />
+
+        <link href="styles/kendo.common.min.css" rel="stylesheet" />
+        <link href="styles/kendo.default.min.css" rel="stylesheet" />
+        <link href="styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
+        <link href="styles/applogger.css" rel="stylesheet" />
+        <link href="styles/mainapp.css" rel="stylesheet" />
+
+        <!-- jQuery JavaScript -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery.cookie.js"></script>
+        <script src="js/jsencrypt.min.js"></script>
+        <script src="js/configjsencrypt.js"></script>
+        <script src="js/kendo.all.min.js"></script>
+    </head>
+
+    <body>
+            <div id="app"></div>
+
+            <script id="login-applayout" type="text/x-kendo-template">
+                <div class="header">
+                    <h1>Datalogger configuration app</h1>
+                </div>
+                <div class="topnav">
+                    <a href="#">Link</a>
+                    <a href="#">Link</a>
+                    <a href="#">Link</a>
+
+                    <a  style="float:right" href="#/login">Log In</a>
+                    <a  style="float:right" href="#/logout">Log Out</a>
+                </div>
+
+                <div class="row">
+                    <div class="leftcolumn">
+                        <div class="card">
+                            <div id="leftSection"></div>
+                        </div>
+                    </div>
+                    <div class="rightcolumn">
+                        <div class="card">
+                            <div id="rightSection"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <h2>Footer</h2>
+                </div>
+            </script>
+
+            <script id="index" type="text/x-kendo-template">
+                Hello <span data-bind="text: foo"></span>
+                <button data-bind="click: buttonClick">Click me to call view model code</button>
+                <a href="#" data-bind="click: goToView2">Go to view 2</a>
+            </script>
+
+            <script id="login" type="text/x-kendo-template">
+                <h2>Login</h2>
+                <p>Please insert your credentials:</p>
+                    <input type="text" name="username" />
+                    <input type="password" name="password" />
+          
+                    <br/><br/>
+                    <button type="submit" id="btnSubmit" > OK </button>
+                    <button type="button" id="btnCancel" class="close"> Cancel </button>
+            </script>
+        
+            <script>
+                var webSvn = location.protocol + "//" + location.host + "/v1";
+
+                // models
+                var indexViewModel = kendo.observable({
+                  title: "index",
+        
+                  init: function() {
+                    console.log("view init", this.title);
+                  },
+        
+                  show: function() {
+                    console.log("view show", this.title);
+                  },
+
+                  hide: function() {
+                        console.log("view hide", this.title);
+                  },
+
+                  buttonClick: function() {
+                    alert("button clicked");
+                  },
+        
+                  goToView2: function(e) {
+                    router.navigate("/detail");
+                    e.preventDefault();
+                  }
+                });
+
+                var loginViewModel = kendo.observable({
+                  title: "login",
+        
+                  init: function(e) {
+                    console.log("view init", this.title, e);
+                    var pEl = e.sender.element;
+                    var username = pEl.find("input[name='username']"),
+                        usrpwd = pEl.find("input[name='password']"),
+                        submitBtn = pEl.find("#btnSubmit");
+                        submitBtn.click(function(e){
+                            console.log("submit btn",e);
+                            // var sendData = {
+                            //     'username': username,
+                            //     'password': usrpwd,
+                            // }
+                            var urlLogin = webSvn + "/login";
+                            console.log("url",urlLogin)
+
+                            var mformData = new FormData();
+                            mformData.append('username', username.val());
+                            mformData.append('password', usrpwd.val());
+                            $.ajax({
+                                method: 'post',
+                                //processData: false,
+                                contentType: 'application/json',
+                                cache:false,                                
+                                data: mformData,
+                                //enctype: 'multipart/form-data',
+                                url: urlLogin,
+                                success:function(resp){
+                                    console.log("Post response data", resp);
+                                },
+                                fail: function(err){
+                                    console.log("Post response data fail", err);
+
+                                }
+                            })
+                            // $.post(
+                            //     urlLogin,
+                            //     sendData,
+                            //     function(data, status, xhr){
+                            //          console.log("******login post request******")
+                            //          cosole.log("xhr", xhr);
+                            //          cosole.log("status", status);
+                            //          cosole.log("data", data);
+                            //          console.log("******login post request******")
+                            //     }); 
+
+                        })
+                  },
+        
+                  show: function() {
+                    console.log("view show", this.title);
+                  },
+
+                  hide: function() {
+                        console.log("view hide", this.title);
+                  },
+
+                  submitBtn: function() {
+                    alert("button clicked");
+                  },
+        
+                  goToView2: function(e) {
+                    // router.navigate("/detail");
+                    e.preventDefault();
+                  }
+                });
+
+                var meniuViewModel = kendo.observable({});
+                var aboutViewModel = kendo.observable({    
+                    title: "about",
+
+                    init: function(e) {
+                        console.log("view init", this.title,e);
+                    },
+            
+                    show: function() {
+                        console.log("view show", this.title);
+                    },
+
+                    hide: function() {
+                        console.log("view hide", this.title);
+                    },
+                });
+        
+        
+                // views, layouts
+                var layout = new kendo.Layout($("#login-applayout").html());
+        
+                var index = new kendo.View("index", { 
+                    model: indexViewModel, 
+                    init:  indexViewModel.init.bind(indexViewModel), 
+                    show:  indexViewModel.show.bind(indexViewModel),
+                    hide:  indexViewModel.hide.bind(indexViewModel),
+                 });
+                var about = new kendo.View("about", { 
+                    model: aboutViewModel, 
+                    init:  aboutViewModel.init.bind(aboutViewModel),
+                    show:  aboutViewModel.show.bind(aboutViewModel),
+                    hide:  aboutViewModel.hide.bind(aboutViewModel),
+                });
+        
+                var detail = new kendo.View("<div>Detail - press your browser back button to navigate back.</div>");
+                var login = new kendo.View("login", {
+                    model: loginViewModel, 
+                    init:  loginViewModel.init.bind(aboutViewModel),
+                    show:  loginViewModel.show.bind(aboutViewModel),
+                    hide:  loginViewModel.hide.bind(aboutViewModel),
+                });
+                var logout = new kendo.View("<div>Logout</div>");
+        
+        
+                // routing
+                var router = new kendo.Router();
+        
+                router.bind("init", function() {
+                    layout.render($("#app"));
+                });
+        
+                router.route("/", function() {
+                    layout.showIn("#rightSection", index);
+                });
+        
+                router.route("/detail", function() {
+                    layout.showIn("#rightSection", detail);
+                });
+
+                router.route("/login", function() {
+                    layout.showIn("#rightSection", login);
+                });
+                router.route("/logout", function() {
+                    layout.showIn("#rightSection", logout);
+                });
+        
+                $(function() {
+                    router.start();
+                });
+        
+            </script>
+        
+
+    </body>
+</html>

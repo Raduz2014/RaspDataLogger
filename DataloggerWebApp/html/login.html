@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Datalogger login page</title>
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta charset="utf-8" />
+
+    <link href="styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="styles/kendo.default.min.css" rel="stylesheet" />
+    <link href="styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
+    <link href="styles/applogger.css" rel="stylesheet" />
+
+    <!-- jQuery JavaScript -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/jsencrypt.min.js"></script>
+    <script src="js/configjsencrypt.js"></script>
+    <script src="js/kendo.all.min.js"></script>
+
+    <style>
+        #logos-container {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+            margin: 0;
+        }
+
+        #logos-container > div > img {
+            vertical-align: middle;
+        }
+    </style>
+
+</head>
+<body>
+    <div data-role="view" id="login"
+         data-title="Login"
+         data-model="LoginApp.data.model"
+         data-layout="app-login-layout"
+         data-show="LoginApp.data.viewShow" data-init="LoginApp.data.viewInit">      
+
+        <div class="viewOuterDiv">
+            <div class="login-view-container viewInnerDiv">
+                <div id="logos-container">
+                    <div class="img-container"><img src="../images/ENDUSER_logo_login.png" /></div>
+                </div>
+
+                <div class="logindiv">
+                    <form>
+                        <ul data-role="listview" data-style="inset">
+                            <li data-icon="ei-user">
+                                <div class="tbt login-user" data-tbt="Username">Username</div>
+                                <input type="text" id="username" name="username" placeholder="your username" required />
+                            </li>
+                            <li data-icon="ei-password">
+                                <div class="tbt login-password" data-tbt="Password">Password</div>
+                                <input type="text" id="password" name="password" placeholder="your password" required />
+                            </li>
+                            <li data-icon="ei-language2">
+                                <div class="tbt language" data-tbt="Language">Language</div>
+                                <input type="text" id="languages" style="text-align: left;" />
+                            </li>
+                        </ul>
+                        <a id="loginButton" data-click="LoginApp.data.logIn_click" data-role="button" style="text-align: center; display: block; margin: 1em;">
+                            <div class="tbt" data-tbt="Login">Login</div>
+                        </a>
+                    </form>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+
+    <div data-role="layout" data-id="app-login-layout">
+        <div data-role="header">
+            <div data-role="navbar">
+                <span data-role="view-title">Login</span>
+            </div>
+        </div>
+    </div>
+    <style>
+        .kl-footer-title {
+            color: white;
+            display: block;
+            text-align: center;
+        }
+        .km-view-title {
+            background-color: #F5F5DC;
+        } 
+        </style>
+    <script>
+        var loginSVN = location.protocol + "//" + location.host + "/v1";
+
+        var LoginApp = {};
+        $.cookie.json = true;
+
+        var zzCookie = {
+            createLoginCookie: function () {
+                var c = $.cookie('login', '1', { expires: 31, path: '/' });
+                return c;
+            },
+            isLogIn: function () {
+                var clogin = $.cookie('login');
+                if (clogin && clogin === "1") {
+                    //if exists and logged in
+                    return 1;
+                }
+                else if (clogin && clogin === "0") {
+                    //if exists and logged out
+                    return 0;
+                }
+                //if doesn't exists
+                return -1;
+            },
+            setLogState: function (s) {
+                var clogin = $.cookie('login');
+                if (clogin) {
+                    s ? $.cookie('login', "1") : $.cookie('login', "0");
+                }
+            },
+
+            getLoginCookie: function () {
+                return $.cookie('login', Number);
+            },
+            removeLoginCookie: function () {
+                return $.removeCookie('login');
+            }
+        };
+
+        (function (app, zzCookie) {
+            var loginModel = kendo.observable({
+                onInit: function (e) {
+                    console.log("Login Model:", e);
+
+                    if(zzCookie.isLogIn() == 1) {
+                        window.document.location.replace("index.html");
+                    }
+                }
+            });
+            // Private methods:
+            function viewInit(e) {
+                console.log("viewInit", e);
+                var view = e.view;
+                var $languagesDDL = view.container.find('input[id="languages"]'),
+                langsDDl = $languagesDDL.data("kendoDropDownList"),
+                $loginBtn = view.container.find('input[id="languages"]');
+
+                view.container
+                    .find("#username,#password")
+                    .on('click', function () {
+                        console.log("click")
+                    }).keypress(function (e) {
+                        if (e.which == 13) {
+                            console.log("Enter key was pressed")
+                        }
+                    });
+
+                if (!langsDDl) {
+                    langsDDl = $languagesDDL.kendoDropDownList({
+                        dataSource: {
+                            data: ["One", "Two"]
+                        }
+                    }).data("kendoDropDownList");
+                }
+            }
+
+            function viewShow(e) {
+                console.log("viewShow", e);
+
+                var view = e.view;                
+            }
+
+            function logIn_click(e) {
+                console.log("Login to app", e);
+                var uname = $("#username").val(),
+                    pwd = $("#password").val();;
+
+                var loginObj = {
+                    user: uname,
+                    pwd: pwd
+                };
+
+                switch(zzCookie.isLogIn()){
+                    case -1: 
+                        $.getJSON(loginSVN + "/isLogin?" + $.param(loginObj))
+                         .done(loginResponseHandle)
+                         .fail(loginFailedHandle);                        
+                        break;
+                    case 0:
+                        zzCookie.setLogState(true);
+                        break;
+                }
+
+                var currentUrl = document.location.href;
+                //window.document.location.replace("index.html");
+            }
+
+            function loginResponseHandle(data) {
+                console.log("login response",data)
+                zzCookie.createLoginCookie();
+                window.document.location.replace("index.html");
+            }
+
+            function loginFailedHandle(err) { 
+                if(err.status == 200){
+                    switch(err.responseText){
+                        case 'ok':
+                        console.log("login fail",err, true)
+                        
+                        break;
+                        case 'fail':
+                        console.log("login fail",err, false)
+
+                        break;
+                    }
+                }
+                console.log("login fail",err)
+
+            }
+
+            // Public methods:
+            app.data = {
+                model: loginModel,
+                viewInit: viewInit,
+                viewShow: viewShow,
+                logIn_click: logIn_click,
+            };
+
+        }(LoginApp, zzCookie));
+
+        var appLogin = new kendo.mobile.Application($(document.body), {
+            layout: "app-login-layout",
+            skin: "flat",
+            transition: "slide",
+            hideAddressBar: true
+        });
+    </script>
+</body>
+</html>

@@ -5,6 +5,8 @@ import os, sys
 sys.path.insert(0, "home/pi/RaspDataLogger/DataloggerWebApp/WebApi/v1")
 
 import bottle
+from bottle import response, route
+from json import dumps
 from bottle.ext import sqlite, beaker
 from beaker.middleware import SessionMiddleware
 from cork import Cork
@@ -38,7 +40,15 @@ application = SessionMiddleware(application, session_opts)
 
 #import web_api_service
 
+@route('/test')
+def test_webapi():
+    return 'test page data'
 
+@route('/testdata')
+def test_webapi():    
+    rv = [{"id":1, "name":"Test1"},{"id":2, "name":"Test33333"}]
+    response.content_type = 'application/json'
+    return dict(data=rv)
 
 def postd():
     return bottle.request.forms
@@ -201,7 +211,7 @@ def sorry_page():
 
 def main():
     bottle.debug(True)
-    bottle.run(application, host='localhost', port=80, reloader=True)
+    bottle.run(application, host='localhost', port=98, reloader=True)
 
 if __name__ == "__main__":
     main()
