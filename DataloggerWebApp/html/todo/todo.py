@@ -23,7 +23,7 @@ def new_item():
 
     if request.GET.save:
 
-        new = request.GET.task.strip()
+        new = request.GET.task.strip()py
         conn = sqlite3.connect('todo.db')
         c = conn.cursor()
 
