@@ -1,0 +1,1 @@
+sudo ln -sf /home/pi/RaspDataLogger/configs/TestTodo.conf /etc/apache2/sites-enabled/TestTodo.conf
