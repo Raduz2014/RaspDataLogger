@@ -8,7 +8,9 @@ from datetime import datetime
 from cork import Cork
 
 def populate_conf_directory():
-    cork = Cork('/home/pi/RaspDataLogger/DataloggerWebApp/WebApi/v1/example_conf', initialize=True)
+    myUsersDir = '/home/pi/RaspDataLogger/DataloggerWebApp/html/todo/example_conf'
+    # cork = Cork('/home/pi/RaspDataLogger/DataloggerWebApp/WebApi/v1/example_conf', initialize=True)
+    cork = Cork(myUsersDir, initialize=True)
 
     cork._store.roles['admin'] = 100
     cork._store.roles['editor'] = 60
@@ -25,6 +27,14 @@ def populate_conf_directory():
         'creation_date': tstamp
     }
     username = password = ''
+    cork._store.users[username] = {
+        'role': 'user',
+        'hash': cork._hash(username, password),
+        'email_addr': username + '@localhost.local',
+        'desc': username + ' test user',
+        'creation_date': tstamp
+    }
+    username = password = 'demo'
     cork._store.users[username] = {
         'role': 'user',
         'hash': cork._hash(username, password),

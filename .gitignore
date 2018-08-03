@@ -102,3 +102,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+DataloggerWebApp/html/todo/data/container_file_lock/2/25/25309e3a8bd3600d25f4a7593c5b6bbae849756a.lock
+DataloggerWebApp/html/todo/data/container_file/e/e8/e86064b9cd1c4cc6a5f57d62b92ee88c.cache
+DataloggerWebApp/cryptokeys/mypubkey.pem
+DataloggerWebApp/cryptokeys/myprivkey.pem
+DataloggerWebApp/cryptokeys/rsa_key.bin

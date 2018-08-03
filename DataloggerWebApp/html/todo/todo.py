@@ -1,14 +1,60 @@
-import sqlite3
-from bottle import route, run, debug, template, request, static_file, error
+import sqlite3, bottle, os, logging
+from bottle import route, view, post, get, run, debug, template, static_file, error
+from bottle import Bottle, request, redirect
+from bottle_login import LoginPlugin
+
+#Consts
+todoDbPath = os.path.dirname(os.path.realpath(__file__)) + '/todo.db'
+usersDirPath = os.path.dirname(os.path.realpath(__file__)) + '/example_conf'
 
 # only needed when you run Bottle on mod_wsgi
-from bottle import default_app
+#from bottle import default_app
+# application = bottle.default_app() 
+bottle.debug(True)
+#bottle.TEMPLATE_PATH.insert(0, "/home/pi/RaspDataLogger/DataloggerWebApp/html/todo/views")
+app = Bottle()
+app.config['SECRET_KEY'] = 'secret'
+
+login = app.install(LoginPlugin())
+
+#login.create_session()
+
+USERS = 'admin', 'demo', 'user'
+@login.load_user
+def load_user_by_id(user_id):
+    return USERS[user_id]
+    #pass #load user by id here
+
+@app.route('/')
+def index():
+    current_user = login.get_user()
+    return current_user
+
+@route('/test')
+def test():    
+    return "test page"
+
+@app.route('/signout')
+def signout():
+    login.logout_user()
+    return redirect('/')
 
 
-@route('/todo')
+@app.route('/signin')
+def signin():
+    user_id = int(request.GET.get('user_id'))
+    login.login_user(user_id)
+    return redirect('/')
+
+
+@app.route('/login')
+def login():
+    return "login page"
+
+@app.route('/todo')
 def todo_list():
 
-    conn = sqlite3.connect('todo.db')
+    conn = sqlite3.connect(todoDbPath)
     c = conn.cursor()
     c.execute("SELECT id, task FROM todo WHERE status LIKE '1'")
     result = c.fetchall()
@@ -20,10 +66,9 @@ def todo_list():
 
 @route('/new', method='GET')
 def new_item():
-
     if request.GET.save:
 
-        new = request.GET.task.strip()py
+        new = request.GET.task.strip()
         conn = sqlite3.connect('todo.db')
         c = conn.cursor()
 
@@ -37,7 +82,6 @@ def new_item():
 
     else:
         return template('new_task.tpl')
-
 
 @route('/edit/<no:int>', method='GET')
 def edit_item(no):
@@ -112,8 +156,10 @@ def mistake404(code):
     return 'Sorry, this page does not exist!'
 
 
-# debug(True)
-# run(reloader=True)
-# remember to remove reloader=True and debug(True) when you move your
-# application from development to a productive environment
-
+if __name__ == "__main__":
+    bottle.debug(True)
+    #run(reloader=True)
+    bottle.run(app=app)
+else:
+     pass
+    #  app = bottle.default_app()
