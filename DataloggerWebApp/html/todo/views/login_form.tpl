@@ -1,63 +1,49 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <script type="text/javascript" src="{{ get_url('static', path='js/jquery.min.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ get_url('static', path='js/jquery.cookie.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ get_url('static', path='js/jsencrypt.min.js') }}" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ get_url('static', path='js/configjsencrypt.js') }}" charset="utf-8"></script>
+
 <div id="hbox">
   <div class="box">
       <h2>Login</h2>
       <p>Please insert your credentials:</p>
       <form action="login" method="post" name="login">
-          <input type="text" name="username" />
-          <input type="password" name="password" />
-
-          <br/><br/>
+        <div>
+            <label for="username">Username</label>
+          <input type="text" name="username" id="username" />
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password"/>
+        </div>
+        <div>
           <button type="submit" > OK </button>
           <button type="button" class="close"> Cancel </button>
+        </div>
       </form>
       <br />
   </div>
-  <div class="box">
-      <h2>Signup</h2>
-      <p>Please insert your credentials:</p>
-      <form action="register" method="post" name="signup">
-          <input type="text" name="username" value="username"/>
-          <input type="password" name="password" />
-          <input type="text" name="email_address" value="email address"/>
-
-          <br/><br/>
-          <button type="submit" > OK </button>
-          <button type="button" class="close"> Cancel </button>
-      </form>
-      <br />
-  </div>
-  <div class="box">
-      <h2>Password reset</h2>
-      <p>Please insert your credentials:</p>
-      <form action="reset_password" method="post" name="password_reset">
-          <input type="text" name="username" value="username"/>
-          <input type="text" name="email_address" value="email address"/>
-
-          <br/><br/>
-          <button type="submit" > OK </button>
-          <button type="button" class="close"> Cancel </button>
-      </form>
-      <br />
-  </div>
-  <br style="clear: left;" />
 </div>
 <style>
-div {
-    color: #777;
-    margin: auto;
-    width: 20em;
-    text-align: center;
-}
-div#hbox {width: 100%;}
-div#hbox div.box {float: left; width: 33%;}
-input {
-    background: #f8f8f8;
-    border: 1px solid #777;
-    margin: auto;
-}
-input:hover { background: #fefefe}
+    div {
+        margin:auto;
+        width:20em;
+        text-align:center;
+        padding: 10px;
+    }
+
+    label {
+        display:inline-block;
+        float:left;
+    }
+
+    input {
+        background-color:#f8f8f8;
+        margin:auto;
+        border:1px solid #777;
+    }
 </style>
