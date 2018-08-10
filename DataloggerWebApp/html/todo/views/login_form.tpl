@@ -11,7 +11,7 @@
   <div class="box">
       <h2>Login</h2>
       <p>Please insert your credentials:</p>
-      <form action="login" method="post" name="login">
+      <form id="loginform"  method="post" name="login" onSubmit="return changeFormInputs();">
         <div>
             <label for="username">Username</label>
           <input type="text" name="username" id="username" />
@@ -21,8 +21,7 @@
           <input type="password" name="password" id="password"/>
         </div>
         <div>
-          <button type="submit" > OK </button>
-          <button type="button" class="close"> Cancel </button>
+          <button type="submit" id="btnSubmitLoginData" > OK </button>
         </div>
       </form>
       <br />
@@ -47,3 +46,33 @@
         border:1px solid #777;
     }
 </style>
+<script type="text/javascript">
+    function changeFormInputs(){
+        //var oldPVal =  document.querySelector("input[name='password']").value
+        //document.querySelector("input[name='password']").value = ''
+        //var aa = window.btoa(encSvc.encrypt(oldPVal))
+        //console.log('aa',aa)
+        //document.querySelector("input[name='password']").value = aa
+        document.getElementById('loginform').action = 'login'
+    }
+
+    $(document).ready(function(){
+        /*$('#btnSubmitLoginData')
+        .click(function(){
+            var usrname = $("input[name='username']").val(),
+                parola = $("input[name='password']").val();
+
+            var submitLogin = {
+                username: usrname,
+                password: encSvc.encrypt(parola)
+            };
+
+            $.post('/login',
+            submitLogin,
+            function(data, status, jqXHR) {// success callback
+                console.log('status: ' + status + ', data: ' + data);
+            })
+
+        })*/
+    });
+</script>

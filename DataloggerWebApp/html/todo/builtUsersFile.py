@@ -62,14 +62,27 @@ class UsersStore:
     def delUser(self, user):
         pass
 
+    def checkUserCredential(self, username, secret):
+        mUsrSearched = json.loads(self._store)
+
+        savedpass = mUsrSearched.get(username,None)
+        if savedpass is not None:
+            savedpass = savedpass['password']
+            savedpassDecrypt = appcrypto.decrypt_message(encrypted_msg = savedpass, privateKey = UsersStore.PrivateKey)
+            # decryptTypedSecret = appcrypto.decrypt_message(encrypted_msg = secret, privateKey = UsersStore.PrivateKey)
+
+            if(savedpassDecrypt == secret):
+                return True
+
+        return False
+
     def loadUsersFromFile(self):
         if os.path.isfile(UsersStore.UsersStoreFile) == True and len(self._store) >= 0: 
             try:
                 with open(UsersStore.UsersStoreFile, 'r') as infile:
                     strJson = json.load(infile)
                     self._store = json.dumps(strJson)
-                    print 'load users from file'
-                    self.showStore()
+                    # self.showStore()
             except FileNotFoundError:
                 print 'FileNotFound'
         else:
@@ -94,10 +107,24 @@ class UsersStore:
 
 def main():
     storeUserFile = os.path.dirname(os.path.realpath(__file__))
-    #print storeUserFile
+    print storeUserFile
     myStore = UsersStore(storeUserFile +'/usersauth.json')
     myStore.createDefaultUsers()
-    myStore.loadUsersFromFile()
+    #myStore.loadUsersFromFile()
+
+    # oursecret =  appcrypto.encrypt_message(a_message = 'admin', publickey = UsersStore.PubKey)
+    # print oursecret
+    # decryptTypedSecretV1 = appcrypto.decrypt_message(encrypted_msg = oursecret, privateKey = UsersStore.PrivateKey)
+    # print decryptTypedSecretV1
+    # testp = "UzNTZEthaU96Z09HaFZFUzR5dFBweDFIUGRhY25HSGRDT3NOUE9QS2JHVGo1MkprQ2Z4WE9EK3craXJGV29UdzBReG5QTnBVY2dpYVVpWEhrQVY5dDNGMkxQNDZvRDUvWEJwNnVaaW5CZHdyN0Q4aHJGN3drSGlEV29iTmhSOFF4RDVQbmtCY3krb3Z5Y0c3akUvZmE3YXBUeTdiZi9yZXpGeDZJeXRsNnVrPQ=="
+    # decryptTypedSecretV2 = appcrypto.decrypt_message(encrypted_msg = testp, privateKey = UsersStore.PrivateKey)
+    
+    # print decryptTypedSecretV2
+
+    # soursecret =  appcrypto.encrypt_message(a_message = 'admin', publickey = UsersStore.PubKey)
+
+    # a = myStore.checkUserCredential('admin', testp)
+    # print a
 
 if __name__ == '__main__':
     main()

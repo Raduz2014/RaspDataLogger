@@ -1,4 +1,5 @@
 import sqlite3, os, logging
+from builtUsersFile import UsersStore
 import bottle
 from bottle import Bottle, request, redirect
 from bottle import url
@@ -10,6 +11,7 @@ application = bottle.app()
 #Consts
 todoDbPath = os.path.dirname(os.path.realpath(__file__)) + '/todo.db'
 usersDirPath = os.path.dirname(os.path.realpath(__file__)) + '/example_conf'
+
 
 # only needed when you run Bottle on mod_wsgi
 bottle.debug(True)
@@ -24,8 +26,13 @@ def static(path):
 @route('/login')
 @view('login_form')
 def login():
+   
     app_session = bottle.request.environ.get('beaker.session')
-    app_session['logged_in'] = True
+    if app_session.has_key('logged_in'):
+        if app_session['logged_in'] == True:
+            redirect('/')
+        else:
+            app_session['logged_in'] = False
 
     return {'get_url': url}
 
@@ -35,20 +42,38 @@ def logout():
     app_session = bottle.request.environ.get('beaker.session')
     if app_session.get('logged_in'):
         app_session['logged_in'] = False
-        return 'you are logged out'
+        bottle.redirect('/login')
     bottle.redirect('/login')
 
 def check_login(usrname, secret):
-    pass
+    storeUserFile = os.path.dirname(os.path.realpath(__file__))
+
+    myStore = UsersStore(storeUserFile +'/usersauth.json')
+    myStore.loadUsersFromFile()
+    return myStore.checkUserCredential(usrname, secret)
 
 @route('/login', method='POST')
 def loginAction():
     username = request.forms.get('username')
     password = request.forms.get('password')
-    if check_login(username, password):
-        return "<p>Your login information was correct.</p>"
+    app_session = bottle.request.environ.get('beaker.session')
+    
+    if check_login(usrname = username, secret = password):   
+        app_session['logged_in'] = True
+        bottle.redirect('/')
     else:
-        return "<p>Login failed.</p>"
+        app_session['logged_in'] = False
+        bottle.redirect('/login')
+    
+@route('/config')
+@view('config_page')
+def configPage():
+    app_session = bottle.request.environ.get('beaker.session')
+    if app_session.has_key('logged_in'):
+        if app_session['logged_in'] == False:
+            redirect('/login')
+
+    return {'get_url': url}
 
 @route('/test2')
 def testv2():
@@ -63,9 +88,9 @@ def index():
     app_session = bottle.request.environ.get('beaker.session')
     
     if app_session.get('logged_in'):
-        return {'get_url': get_url}
-
-    bottle.redirect('/login')
+        return {'get_url': url}
+    else:
+        bottle.redirect('/login')
 
 # @route('/todo')
 # def todo_list():

@@ -4,8 +4,7 @@ sys.path = ['/home/pi/RaspDataLogger/DataloggerWebApp/html/todo/'] + sys.path
 os.chdir(os.path.dirname(__file__))
 from beaker.middleware import SessionMiddleware
 from bottle import Bottle
-# from bottle_login import LoginPlugin
-
+bottle.debug(True)
 session_opts = {
     'session.type': 'file',
     'session.cookie_expires':400,
