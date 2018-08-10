@@ -41,6 +41,11 @@ body {
     color: black;
 }
 
+.topnav a.active {
+    background-color: #ddd;
+    color: black;
+}
+
 /* Create two unequal columns that floats next to each other */
 /* Left column */
 .leftcolumn {   
@@ -83,6 +88,29 @@ body {
     text-align: center;
     background: #ddd;
     margin-top: 20px;
+}
+
+.sidemenu h3 {
+    background-color: #1a53ff;
+    color:white; 
+    padding: 5px 10px 5px;
+    margin:0;
+}
+.sidemenu a {
+    background-color: #eee;
+    color:black;
+    display:block;
+    text-decoration: none;
+    padding: 5px 0 5px;
+    padding-left: 25px;
+}
+.sidemenu a:hover {
+    background-color: green;
+}
+.sidemenu a.active {
+    background-color: green;
+    color:white;
+
 }
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */

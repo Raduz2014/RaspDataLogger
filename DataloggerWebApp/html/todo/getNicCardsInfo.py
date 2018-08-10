@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import subprocess, os, string, json
 import StringIO
-import netifaces
+import netifaces, psutil
 
 class Result:
     def __init__(self):
@@ -71,13 +71,25 @@ def getNicCardsInfo(iface_type="eth"):
 
     return ifacesInfo
 
+def networkIOStats():
+    statsNetIO = psutil.net_io_counters(pernic=True)
+    return statsNetIO
+
+def netCardConn():
+    nicInfo = psutil.net_connections(kind='inet')
+    return nicInfo
+
 def main():
-    ips = getNicCardsInfo(iface_type = "eth")
-    if len(ips) > 0:
-        print ips
-    else:
-        print "No interfaces"
-    #print checkWifiIface()
+    # ips = getNicCardsInfo(iface_type = "eth")
+    # if len(ips) > 0:
+    #     print ips
+    # else:
+    #     print "No interfaces"
+    # netiostats = networkIOStats()
+    # print netiostats
+    
+    a = netCardConn()
+    print a
     
 
 if __name__ == '__main__':

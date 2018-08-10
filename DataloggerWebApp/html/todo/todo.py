@@ -73,7 +73,77 @@ def configPage():
         if app_session['logged_in'] == False:
             redirect('/login')
 
-    return {'get_url': url}
+    return {
+        'get_url': url,
+        'page_state':'config'
+
+    }
+
+@route('/schedule_tasks')
+@view('scheduletasks_page')
+def scheduleTasksPage():
+    app_session = bottle.request.environ.get('beaker.session')
+    if app_session.has_key('logged_in'):
+        if app_session['logged_in'] == False:
+            redirect('/login')
+
+    return {
+        'get_url': url,
+        'page_state':'schedtasks'
+    }
+
+@route('/modbus_network')
+@view('modbus_page')
+def modbusPage():
+    app_session = bottle.request.environ.get('beaker.session')
+    if app_session.has_key('logged_in'):
+        if app_session['logged_in'] == False:
+            redirect('/login')
+
+    return {
+        'get_url': url,
+        'page_state':'modbus'
+    }
+
+@route('/meter_profiles')
+@view('meter_profiles_page')
+def meterProfilesPage():
+    app_session = bottle.request.environ.get('beaker.session')
+    if app_session.has_key('logged_in'):
+        if app_session['logged_in'] == False:
+            redirect('/login')
+
+    return {
+        'get_url': url,
+        'page_state':'meterprofiles'
+    }
+
+
+@route('/meter_drivers')
+@view('meter_drivers_page')
+def meterDriversPage():
+    app_session = bottle.request.environ.get('beaker.session')
+    if app_session.has_key('logged_in'):
+        if app_session['logged_in'] == False:
+            redirect('/login')
+
+    return {
+        'get_url': url,
+        'page_state':'meterdrivers'
+    }
+
+@route('/userinfo')
+@view('blank')
+def meterDriversPage():
+    app_session = bottle.request.environ.get('beaker.session')
+    if app_session.has_key('logged_in'):
+        if app_session['logged_in'] == False:
+            redirect('/login')
+
+    return {
+        'get_url': url,
+        'page_state':'userinfo'
+    }
 
 @route('/test2')
 def testv2():
@@ -83,12 +153,33 @@ def testv2():
     return 'Twast k: %d' % s['test']
 
 @route('/')
-@view('start_page')
-def index():
+@route('/<subpage>')
+# @view('start_page')
+def index(subpage = None):
     app_session = bottle.request.environ.get('beaker.session')
     
     if app_session.get('logged_in'):
-        return {'get_url': url}
+
+        state = {
+            'get_url': url,
+            'page_state':'home',
+            'subpage':''
+        }
+
+        if subpage == 'sys_info':
+            state['subpage'] = 'sysinfo'
+            return template('blank', **state);
+        elif subpage == 'wire':
+            state['subpage'] = 'wire'
+            return template('blank', **state);
+        elif subpage == 'wireless':
+            state['subpage'] = 'wireless'
+            return template('blank', **state);
+        elif subpage == 'mobile':
+            state['subpage'] = 'mobile'
+            return template('blank', **state);
+
+        return template('start_page', **state);
     else:
         bottle.redirect('/login')
 
