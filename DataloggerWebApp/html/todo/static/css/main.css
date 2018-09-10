@@ -71,8 +71,14 @@ body {
 /* Add a card effect for articles */
 .card {
     background-color: white;
-    padding: 20px;
-    margin-top: 20px;
+    padding: 2px;
+    margin-top: 2px;
+}
+
+.lan-card {
+    background-color: yellowgreen;
+    padding: 2px;
+    margin-top: 2px;
 }
 
 /* Clear floats after the columns */

@@ -1,10 +1,13 @@
-import sqlite3, os, logging
+import sqlite3, os, psutil, logging
 from builtUsersFile import UsersStore
 import bottle
 from bottle import Bottle, request, redirect
 from bottle import url
 from bottle import route, view, post, get, run, debug, template, static_file, error
 from beaker.middleware import SessionMiddleware
+
+import NetCardsInfo
+
 application = bottle.app()
 
 
@@ -25,8 +28,7 @@ def static(path):
 
 @route('/login')
 @view('login_form')
-def login():
-   
+def login():   
     app_session = bottle.request.environ.get('beaker.session')
     if app_session.has_key('logged_in'):
         if app_session['logged_in'] == True:
@@ -166,15 +168,45 @@ def index(subpage = None):
             'subpage':''
         }
 
-        if subpage == 'sys_info':
+        if subpage == 'sysinfo':
             state['subpage'] = 'sysinfo'
-            return template('blank', **state);
+
+            state['device_name'] = os.uname()[1]
+            state['sn'] = "xxx-xxx-xxx"
+            state['mem_usage'] = "22.91%"
+            state['internet_conn'] = True
+            state['remote_access'] = True
+            state['uptime'] = '1 hour 28 minutes'
+            state['disk_usage'] = '20%'
+            state['current_date'] = 'Miercuri Aug 22 12:22:22 2012'
+
+            return template('system_info', **state);
         elif subpage == 'wire':
             state['subpage'] = 'wire'
-            return template('blank', **state);
+
+            ethInfo = NetCardsInfo.getNicCardsInfo(iface_type="eth")
+            
+            ks = ethInfo.keys()
+
+            nicItems = ethInfo.items()
+
+
+            #ifaceName = ks[0]
+            if(len(nicItems) > 0):
+                state['lans'] = nicItems
+
+                # for kn in ks:
+                #     idx = 0
+                #     lan_name = 'lan_' + idx + "_" + kn
+                #     idx+=1
+                #     state[lan_name] = ethInfo[kn]
+
+            #     state.update(ethInfo[kn])
+
+            return template('wire_iface', **state);
         elif subpage == 'wireless':
             state['subpage'] = 'wireless'
-            return template('blank', **state);
+            return template('wifi_iface', **state);
         elif subpage == 'mobile':
             state['subpage'] = 'mobile'
             return template('blank', **state);

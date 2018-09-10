@@ -60,17 +60,17 @@
 
 <div class="row">
   <div class="leftcolumn">\\
-    %if page_state == "home": 
-      <div class="card sidemenu">     
+    %if page_state == "home":
+    <div class="card sidemenu">     
         <h3>System</h3>
-        <a href="/sys_info" \\
-          %if subpage == "sys_info": 
-          class="active" \\
+        <a href="/sysinfo" \\
+          %if subpage == "sysinfo": 
+            class="active" \\
           %end 
         >Information</a>
         <a href="/wire" \\
             %if subpage == "wire": 
-            class="active" \\
+              class="active" \\
             %end         
         >Wire network</a>
         <a href="/wireless" \\

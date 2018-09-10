@@ -80,16 +80,19 @@ def netCardConn():
     return nicInfo
 
 def main():
-    # ips = getNicCardsInfo(iface_type = "eth")
-    # if len(ips) > 0:
-    #     print ips
-    # else:
-    #     print "No interfaces"
+    ips = getNicCardsInfo(iface_type = "eth")
+    if len(ips) > 0:
+        print ips.items()
+    else:
+        print "No interfaces"
+    
+    #print ips.keys()
+    # print ips.items()
     # netiostats = networkIOStats()
     # print netiostats
     
-    a = netCardConn()
-    print a
+    # a = netCardConn()
+    # print a
     
 
 if __name__ == '__main__':
